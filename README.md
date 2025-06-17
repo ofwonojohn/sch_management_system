@@ -1,3 +1,4 @@
+# sch_management_system
 # school_system_app
 
 A new Flutter project.
