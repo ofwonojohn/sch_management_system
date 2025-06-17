@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "805775935922",
+    "project_id": "ugandaschoolsystem-d1ca3",
+    "storage_bucket": "ugandaschoolsystem-d1ca3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805775935922:android:c3e545390623d4d71e7cab",
+        "android_client_info": {
+          "package_name": "com.example.school_system_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbXyp_Ei-qbTESrtpbpnnWV7qHwcw5XBg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
