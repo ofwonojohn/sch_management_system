@@ -3,7 +3,7 @@ import 'package:school_system_app/screens/students/add_academic_record_screen.da
 
 class StudentDetailsScreen extends StatelessWidget {
   final Map<String, dynamic> studentData;
-  final String studentDocId;  
+  final String studentDocId;
 
   const StudentDetailsScreen({
     super.key,
@@ -13,6 +13,8 @@ class StudentDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isALevel = studentData['level']?.toLowerCase() == "a'level";
+
     return Scaffold(
       appBar: AppBar(
         title: Text('${studentData['fullName']} Details'),
@@ -27,9 +29,21 @@ class StudentDetailsScreen extends StatelessWidget {
             _buildDetailRow("Level", studentData['level']),
             _buildDetailRow("Gender", studentData['gender']),
             _buildDetailRow("Date of Birth", studentData['dob']),
+
+            // --- A'Level subjects section ---
+            if (isALevel) ...[
+              const SizedBox(height: 16),
+              Text('Subject Combination:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              _buildDetailRow("Subject 1", studentData['subject1']),
+              _buildDetailRow("Subject 2", studentData['subject2']),
+              _buildDetailRow("Subject 3", studentData['subject3']),
+              _buildDetailRow("Subsidiary", studentData['subsidiary']),
+              _buildDetailRow("GP", studentData['gp']),
+            ],
+
             const SizedBox(height: 30),
 
-            // Add Academic Record Button
+            // --- Button to add academic records ---
             ElevatedButton.icon(
               icon: Icon(Icons.add),
               label: Text("Add Academic Record"),
@@ -37,9 +51,7 @@ class StudentDetailsScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => AddAcademicRecordScreen(
-                      studentId: studentDocId, 
-                    ),
+                    builder: (_) => AddAcademicRecordScreen(studentId: studentDocId),
                   ),
                 );
               },
@@ -53,17 +65,16 @@ class StudentDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow(String label, String? value) {
+    Widget _buildDetailRow(String label, dynamic value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: Row(
         children: [
-          Text('$label: ',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          Expanded(
-              child: Text(value ?? 'N/A', style: TextStyle(fontSize: 16))),
+          Text('$label: ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          Expanded(child: Text(value?.toString() ?? 'N/A', style: TextStyle(fontSize: 16))),
         ],
       ),
     );
   }
+
 }
