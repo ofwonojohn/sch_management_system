@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:school_system_app/screens/dashboards/student_registration.dart';
+import 'package:school_system_app/screens/students/alevel_registration.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -36,6 +37,35 @@ class DashboardScreen extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/selectClass', arguments: "A'Level");
               },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showRegistrationLevelDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Select Student Level"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                _navigateTo(context, StudentRegistrationScreen()); // O'Level screen
+              },
+              child: Text("O'Level Student"),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                _navigateTo(context, ALevelRegistrationScreen()); // A'Level screen
+              },
+              child: Text("A'Level Student"),
             ),
           ],
         ),
@@ -101,14 +131,11 @@ class DashboardScreen extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.all(16),
         children: [
-          // --- SCHOOL HEADER SECTION ---
           Container(
             padding: EdgeInsets.symmetric(vertical: 10),
             alignment: Alignment.center,
             child: Column(
               children: [
-                // Optional school logo
-                // Image.asset('assets/school_logo.png', height: 100),
                 Icon(Icons.school, size: 80, color: Colors.blue[700]),
                 SizedBox(height: 10),
                 Text(
@@ -149,7 +176,6 @@ class DashboardScreen extends StatelessWidget {
           Divider(thickness: 2),
           SizedBox(height: 4),
 
-          // --- EXISTING MENU ITEMS ---
           Text(
             'Welcome to the School Admin Dashboard',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -159,7 +185,7 @@ class DashboardScreen extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.person_add),
             title: Text('Register New Student'),
-            onTap: () => _navigateTo(context, StudentRegistrationScreen()),
+            onTap: () => _showRegistrationLevelDialog(context), // ← Modified
           ),
           Divider(),
 
