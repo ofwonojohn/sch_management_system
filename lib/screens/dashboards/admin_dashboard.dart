@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:school_system_app/screens/dashboards/student_registration.dart';
-import 'package:school_system_app/screens/dashboards/view_student.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -15,11 +14,82 @@ class DashboardScreen extends StatelessWidget {
     Navigator.push(context, MaterialPageRoute(builder: (_) => page));
   }
 
+  void _showLevelSelectionDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Select Level'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ElevatedButton(
+              child: Text("O'Level"),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/selectClass', arguments: "O'Level");
+              },
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              child: Text("A'Level"),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/selectClass', arguments: "A'Level");
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _funAcronym(BuildContext context) {
+    final color = Colors.blue[700];
+    final textStyle = TextStyle(fontSize: 13, color: Colors.blue[900], fontWeight: FontWeight.w600);
+
+    Widget letterBox(String letter) {
+      return Container(
+        width: 22,
+        height: 22,
+        decoration: BoxDecoration(
+          color: color,
+          shape: BoxShape.circle,
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          letter,
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+        ),
+      );
+    }
+
+    Widget meaning(String word) {
+      return Text(word, style: textStyle);
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        letterBox('F'),
+        SizedBox(width: 6),
+        meaning('Functionality'),
+        SizedBox(width: 16),
+        letterBox('U'),
+        SizedBox(width: 6),
+        meaning('Usability'),
+        SizedBox(width: 16),
+        letterBox('N'),
+        SizedBox(width: 6),
+        meaning('Neatness'),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Admin Dashboard'),
+        title: Text('OurLady'),
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
@@ -31,6 +101,55 @@ class DashboardScreen extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.all(16),
         children: [
+          // --- SCHOOL HEADER SECTION ---
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                // Optional school logo
+                // Image.asset('assets/school_logo.png', height: 100),
+                Icon(Icons.school, size: 80, color: Colors.blue[700]),
+                SizedBox(height: 10),
+                Text(
+                  'OurLady OF Fatima',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue[800],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Built With',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.blue[600],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 4),
+                Text(
+                  'FUN',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue[700],
+                    letterSpacing: 6,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 8),
+                _funAcronym(context),
+              ],
+            ),
+          ),
+          Divider(thickness: 2),
+          SizedBox(height: 4),
+
+          // --- EXISTING MENU ITEMS ---
           Text(
             'Welcome to the School Admin Dashboard',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -47,8 +166,7 @@ class DashboardScreen extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.group),
             title: Text('View All Students'),
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ViewStudentsScreen())),
-
+            onTap: () => _showLevelSelectionDialog(context),
           ),
           Divider(),
 
@@ -56,7 +174,6 @@ class DashboardScreen extends StatelessWidget {
             leading: Icon(Icons.bar_chart),
             title: Text('View Performance'),
             onTap: () {
-              // TODO: Implement View Performance screen
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Coming soon...')));
             },
           ),
@@ -66,7 +183,6 @@ class DashboardScreen extends StatelessWidget {
             leading: Icon(Icons.school),
             title: Text('View Teacher Details'),
             onTap: () {
-              // TODO: Implement View Teacher screen
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Coming soon...')));
             },
           ),

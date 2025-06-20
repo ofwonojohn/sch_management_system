@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hive/hive.dart';
+import 'package:school_system_app/models/student_model.dart';
 
 class StudentRegistrationScreen extends StatefulWidget {
   @override
@@ -25,6 +27,7 @@ class _StudentRegistrationScreenState extends State<StudentRegistrationScreen> {
   void registerStudent() async {
     if (_formKey.currentState!.validate()) {
       try {
+        // Save to Firebase
         await FirebaseFirestore.instance.collection('students').add({
           'fullName': fullNameController.text.trim(),
           'studentID': studentIDController.text.trim(),
@@ -36,10 +39,25 @@ class _StudentRegistrationScreenState extends State<StudentRegistrationScreen> {
           'createdAt': Timestamp.now(),
         });
 
+        // Save to Hive
+        final studentBox = Hive.box<StudentModel>('studentsBox');
+        final student = StudentModel(
+          fullName: fullNameController.text.trim(),
+          studentID: studentIDController.text.trim(),
+          studentClass: selectedClass,
+          level: selectedLevel,
+          dob: dobController.text.trim(),
+          gender: selectedGender,
+          guardianContact: guardianContactController.text.trim(),
+        );
+        await studentBox.add(student);
+
+        // Notify success
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Student registered successfully')),
         );
 
+        // Reset form
         _formKey.currentState!.reset();
         fullNameController.clear();
         studentIDController.clear();
